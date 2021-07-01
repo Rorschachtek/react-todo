@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
-
+import Header from "./components/Header";
+import Tasks from "./components/Tasks";
+import{useState} from 'react'
+import AddTask from "./components/AddTask";
 function App() {
+  const [showAdd,setShowAdd]=useState(false)
+  console.log('showAdd')
+  const [users,setTasks]=useState([ ])
+  const addTask=(task)=>{
+    const id=Math.floor(Math.random()*10000)+1
+    const newTask={id,...task}
+    setTasks([...users,newTask])
+  }
+
+  const onDelete=(id)=>{
+    setTasks(users.filter((task)=>task.id!==id))
+  }
+
+  const toggleReminder=(id)=>{
+    setTasks(users.map((task)=>task.id===id?{...task, rem: !task.rem  }:task))
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='component'>
+      <Header showAdd={showAdd} onAdd={()=>setShowAdd(!showAdd)}/>
+      {showAdd&&<AddTask onAdd={addTask}/>} 
+      {users.length>0?<Tasks users={users} toggle={toggleReminder} clicker={onDelete}/>:<h5>No Task to display</h5>}
     </div>
   );
 }
