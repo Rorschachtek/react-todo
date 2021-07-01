@@ -12,6 +12,7 @@ const AddTask = ({onAdd}) => {
             return
         }
         onAdd({text,day,rem})
+    
         setText('')
         setDay('')
         setRem(false)
